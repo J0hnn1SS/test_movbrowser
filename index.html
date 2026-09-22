@@ -14,4 +14,10 @@
 <input type="text" placeholder="teste de teclado" style="width:100%;padding:12px;font-size:16px">
 <p>Digite acima: <span id="k"></span></p>
 <script>document.querySelector('input[type=text]').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '})</script>
+<hr>
+<h3>Imagens quebradas (a página NÃO deve virar tela de erro)</h3>
+<p>404 no mesmo host:</p>
+<img src="imagem-inexistente.png" alt="404 esperado" width="80" height="80">
+<p>Host que não existe:</p>
+<img src="https://host-que-nao-existe.invalid/x.png" alt="DNS falha" width="80" height="80">
 </body></html>
