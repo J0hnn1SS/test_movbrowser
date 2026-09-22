@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Teste MovBrowser</title>
+<style>body{font-family:sans-serif;padding:16px}button{display:block;width:100%;padding:14px;margin:8px 0;font-size:16px}</style>
+</head><body>
+<h2>Teste MovBrowser</h2>
+<button onclick="window.open('https://example.com')">1. window.open &rarr; deve BLOQUEAR</button>
+<button onclick="location.href='https://example.com'">2. location.href &rarr; deve BLOQUEAR</button>
+<a href="https://example.com" target="_blank"><button>3. link _blank &rarr; deve BLOQUEAR</button></a>
+<button onclick="location.href='file:///sdcard/'">4. file:// &rarr; deve BLOQUEAR</button>
+<button onclick="location.href='data:text/html,<h1>vazou</h1>'">5. data: &rarr; deve BLOQUEAR</button>
+<button onclick="location.href='intent://x/#Intent;scheme=http;end'">6. intent:// &rarr; deve BLOQUEAR</button>
+<hr>
+<input type="file" id="f" onchange="document.getElementById('r').textContent='Arquivo: '+this.files[0].name">
+<p id="r">(teste de upload)</p>
+<input type="text" placeholder="teste de teclado" style="width:100%;padding:12px;font-size:16px">
+<p>Digite acima: <span id="k"></span></p>
+<script>document.querySelector('input[type=text]').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '})</script>
+</body></html>
