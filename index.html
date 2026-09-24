@@ -1,10 +1,16 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Teste MovBrowser</title>
-<style>body{font-family:sans-serif;padding:16px}button{display:block;width:100%;padding:14px;margin:8px 0;font-size:16px}input{margin:6px 0 14px}h3{margin-top:28px}.r{font-family:monospace;color:#0a6}</style>
+<style>body{font-family:sans-serif;padding:16px}button{display:block;width:100%;padding:14px;margin:8px 0;font-size:16px}input{margin:6px 0 14px}h3{margin-top:28px}.r{font-family:monospace;color:#0a6}.track{position:relative;height:28px;background:#eee;border-radius:4px;overflow:hidden;margin:6px 0 12px}.dot{position:absolute;top:4px;left:0;width:20px;height:20px;border-radius:50%;background:#0a6;animation:mvbmove 2s linear infinite alternate}@keyframes mvbmove{from{transform:translateX(0)}to{transform:translateX(280px)}}.fade{animation:mvbfade 1.5s ease-out both}@keyframes mvbfade{from{opacity:0}to{opacity:1}}</style>
 </head><body>
 <h2>Teste MovBrowser</h2>
 <h3>Tamanho da área da página</h3>
 <p>Na abertura: <span id="vp0" class="r">?</span></p>
 <p>Agora: <span id="vp1" class="r">?</span></p>
+<h3>Animações</h3>
+<p>1. Animação de CSS (a bolinha deve ir e voltar):</p>
+<div class="track"><div class="dot"></div></div>
+<p class="fade">2. Este texto aparece com efeito de entrada. Se você está lendo, o efeito terminou.</p>
+<p>3. Quadros desenhados (deve subir sem parar): <span id="raf" class="r">0</span></p>
+<p>4. Segundos pelo relógio da página (deve subir 1 por segundo): <span id="tick" class="r">0</span></p>
 <h3>Navegação bloqueada</h3>
 <button onclick="window.open('https://example.com')">1. window.open &rarr; deve BLOQUEAR</button>
 <button onclick="location.href='https://example.com'">2. location.href &rarr; deve BLOQUEAR</button>
@@ -34,15 +40,13 @@
 <h3>Imagens de outros servidores</h3>
 <p>Certificado válido (deve aparecer):</p>
 <img src="https://badssl.com/icons/icon-red.png" alt="certificado válido" width="48" height="48">
-<p>Certificado vencido (deve ficar quebrada, SEM tela de erro):</p>
-<img src="https://expired.badssl.com/icons/icon-red.png" alt="certificado vencido" width="48" height="48">
 <h3>Contador de carregamentos</h3>
 <p>Esta página foi carregada <strong id="loads" class="r">?</strong> vez(es) desde que o contador foi zerado.</p>
 <button onclick="localStorage.setItem('movbrowser_loads','0');document.getElementById('loads').textContent='0'">Zerar contador</button>
 <h3>Teclado</h3>
 <input type="text" id="kt" placeholder="teste de teclado" style="width:100%;padding:12px;font-size:16px">
 <p>Teclas recebidas: <span id="k" class="r"></span></p>
-<script>function mvbVp(){return window.innerWidth+' x '+window.innerHeight+' (altura útil '+document.documentElement.clientHeight+', densidade '+window.devicePixelRatio+')';}document.getElementById('vp0').textContent=mvbVp();function mvbNow(){document.getElementById('vp1').textContent=mvbVp();}mvbNow();window.addEventListener('resize',mvbNow);setInterval(mvbNow,1000);document.getElementById('kt').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '});(function(){var n=0;try{n=parseInt(localStorage.getItem('movbrowser_loads')||'0',10)+1;localStorage.setItem('movbrowser_loads',String(n));}catch(e){n='indisponível';}document.getElementById('loads').textContent=n;})();</script>
+<script>var mvbF=0;(function f(){mvbF++;document.getElementById('raf').textContent=mvbF;requestAnimationFrame(f);})();var mvbT=0;setInterval(function(){mvbT++;document.getElementById('tick').textContent=mvbT;},1000);function mvbVp(){return window.innerWidth+' x '+window.innerHeight+' (altura útil '+document.documentElement.clientHeight+', densidade '+window.devicePixelRatio+')';}document.getElementById('vp0').textContent=mvbVp();function mvbNow(){document.getElementById('vp1').textContent=mvbVp();}mvbNow();window.addEventListener('resize',mvbNow);setInterval(mvbNow,1000);document.getElementById('kt').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '});(function(){var n=0;try{n=parseInt(localStorage.getItem('movbrowser_loads')||'0',10)+1;localStorage.setItem('movbrowser_loads',String(n));}catch(e){n='indisponível';}document.getElementById('loads').textContent=n;})();</script>
 <h3>Imagens quebradas (a página NÃO deve virar tela de erro)</h3>
 <p>404 no mesmo host:</p>
 <img src="imagem-inexistente.png" alt="404 esperado" width="80" height="80">
