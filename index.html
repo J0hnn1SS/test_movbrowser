@@ -28,6 +28,11 @@
 <p id="rc" class="r"></p>
 <button onclick="document.getElementById('rq').textContent='prompt: '+prompt('Digite algo','teste')">prompt()</button>
 <p id="rq" class="r"></p>
+<h3>Imagens de outros servidores</h3>
+<p>Certificado válido (deve aparecer):</p>
+<img src="https://badssl.com/icons/icon-red.png" alt="certificado válido" width="48" height="48">
+<p>Certificado vencido (deve ficar quebrada, SEM tela de erro):</p>
+<img src="https://expired.badssl.com/icons/icon-red.png" alt="certificado vencido" width="48" height="48">
 <h3>Contador de carregamentos</h3>
 <p>Esta página foi carregada <strong id="loads" class="r">?</strong> vez(es) desde que o contador foi zerado.</p>
 <button onclick="localStorage.setItem('movbrowser_loads','0');document.getElementById('loads').textContent='0'">Zerar contador</button>
