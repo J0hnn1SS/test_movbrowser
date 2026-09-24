@@ -2,6 +2,9 @@
 <style>body{font-family:sans-serif;padding:16px}button{display:block;width:100%;padding:14px;margin:8px 0;font-size:16px}input{margin:6px 0 14px}h3{margin-top:28px}.r{font-family:monospace;color:#0a6}</style>
 </head><body>
 <h2>Teste MovBrowser</h2>
+<h3>Tamanho da área da página</h3>
+<p>Na abertura: <span id="vp0" class="r">?</span></p>
+<p>Agora: <span id="vp1" class="r">?</span></p>
 <h3>Navegação bloqueada</h3>
 <button onclick="window.open('https://example.com')">1. window.open &rarr; deve BLOQUEAR</button>
 <button onclick="location.href='https://example.com'">2. location.href &rarr; deve BLOQUEAR</button>
@@ -39,7 +42,7 @@
 <h3>Teclado</h3>
 <input type="text" id="kt" placeholder="teste de teclado" style="width:100%;padding:12px;font-size:16px">
 <p>Teclas recebidas: <span id="k" class="r"></span></p>
-<script>document.getElementById('kt').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '});(function(){var n=0;try{n=parseInt(localStorage.getItem('movbrowser_loads')||'0',10)+1;localStorage.setItem('movbrowser_loads',String(n));}catch(e){n='indisponível';}document.getElementById('loads').textContent=n;})();</script>
+<script>function mvbVp(){return window.innerWidth+' x '+window.innerHeight+' (altura útil '+document.documentElement.clientHeight+', densidade '+window.devicePixelRatio+')';}document.getElementById('vp0').textContent=mvbVp();function mvbNow(){document.getElementById('vp1').textContent=mvbVp();}mvbNow();window.addEventListener('resize',mvbNow);setInterval(mvbNow,1000);document.getElementById('kt').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '});(function(){var n=0;try{n=parseInt(localStorage.getItem('movbrowser_loads')||'0',10)+1;localStorage.setItem('movbrowser_loads',String(n));}catch(e){n='indisponível';}document.getElementById('loads').textContent=n;})();</script>
 <h3>Imagens quebradas (a página NÃO deve virar tela de erro)</h3>
 <p>404 no mesmo host:</p>
 <img src="imagem-inexistente.png" alt="404 esperado" width="80" height="80">
