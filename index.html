@@ -1,20 +1,37 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>Teste MovBrowser</title>
-<style>body{font-family:sans-serif;padding:16px}button{display:block;width:100%;padding:14px;margin:8px 0;font-size:16px}</style>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Teste MovBrowser</title>
+<style>body{font-family:sans-serif;padding:16px}button{display:block;width:100%;padding:14px;margin:8px 0;font-size:16px}input{margin:6px 0 14px}h3{margin-top:28px}.r{font-family:monospace;color:#0a6}</style>
 </head><body>
 <h2>Teste MovBrowser</h2>
+<h3>Navegação bloqueada</h3>
 <button onclick="window.open('https://example.com')">1. window.open &rarr; deve BLOQUEAR</button>
 <button onclick="location.href='https://example.com'">2. location.href &rarr; deve BLOQUEAR</button>
 <a href="https://example.com" target="_blank"><button>3. link _blank &rarr; deve BLOQUEAR</button></a>
 <button onclick="location.href='file:///sdcard/'">4. file:// &rarr; deve BLOQUEAR</button>
 <button onclick="location.href='data:text/html,<h1>vazou</h1>'">5. data: &rarr; deve BLOQUEAR</button>
 <button onclick="location.href='intent://x/#Intent;scheme=http;end'">6. intent:// &rarr; deve BLOQUEAR</button>
-<hr>
-<input type="file" id="f" onchange="document.getElementById('r').textContent='Arquivo: '+this.files[0].name">
-<p id="r">(teste de upload)</p>
-<input type="text" placeholder="teste de teclado" style="width:100%;padding:12px;font-size:16px">
-<p>Digite acima: <span id="k"></span></p>
-<script>document.querySelector('input[type=text]').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '})</script>
-<hr>
+<h3>Envio de arquivo</h3>
+<p>Qualquer arquivo:</p>
+<input type="file" onchange="document.getElementById('r').textContent='Arquivo: '+this.files[0].name">
+<p id="r" class="r"></p>
+<p>Só imagens (accept=image/*), deve oferecer a câmera:</p>
+<input type="file" accept="image/*" onchange="document.getElementById('ri').textContent='Imagem: '+this.files[0].name+' ('+this.files[0].type+')'">
+<p id="ri" class="r"></p>
+<p>Só PDF (accept=.pdf):</p>
+<input type="file" accept=".pdf,application/pdf" onchange="document.getElementById('rp').textContent='PDF: '+this.files[0].name">
+<p id="rp" class="r"></p>
+<p>Vários arquivos (multiple):</p>
+<input type="file" multiple onchange="document.getElementById('rm').textContent=this.files.length+' arquivo(s)'">
+<p id="rm" class="r"></p>
+<h3>Diálogos de JavaScript</h3>
+<button onclick="alert('O alert está funcionando')">alert()</button>
+<button onclick="document.getElementById('rc').textContent='confirm: '+(confirm('Continuar?')?'OK':'Cancelar')">confirm()</button>
+<p id="rc" class="r"></p>
+<button onclick="document.getElementById('rq').textContent='prompt: '+prompt('Digite algo','teste')">prompt()</button>
+<p id="rq" class="r"></p>
+<h3>Teclado</h3>
+<input type="text" id="kt" placeholder="teste de teclado" style="width:100%;padding:12px;font-size:16px">
+<p>Teclas recebidas: <span id="k" class="r"></span></p>
+<script>document.getElementById('kt').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '})</script>
 <h3>Imagens quebradas (a página NÃO deve virar tela de erro)</h3>
 <p>404 no mesmo host:</p>
 <img src="imagem-inexistente.png" alt="404 esperado" width="80" height="80">
