@@ -28,10 +28,13 @@
 <p id="rc" class="r"></p>
 <button onclick="document.getElementById('rq').textContent='prompt: '+prompt('Digite algo','teste')">prompt()</button>
 <p id="rq" class="r"></p>
+<h3>Contador de carregamentos</h3>
+<p>Esta página foi carregada <strong id="loads" class="r">?</strong> vez(es) desde que o contador foi zerado.</p>
+<button onclick="localStorage.setItem('movbrowser_loads','0');document.getElementById('loads').textContent='0'">Zerar contador</button>
 <h3>Teclado</h3>
 <input type="text" id="kt" placeholder="teste de teclado" style="width:100%;padding:12px;font-size:16px">
 <p>Teclas recebidas: <span id="k" class="r"></span></p>
-<script>document.getElementById('kt').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '})</script>
+<script>document.getElementById('kt').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '});(function(){var n=0;try{n=parseInt(localStorage.getItem('movbrowser_loads')||'0',10)+1;localStorage.setItem('movbrowser_loads',String(n));}catch(e){n='indisponível';}document.getElementById('loads').textContent=n;})();</script>
 <h3>Imagens quebradas (a página NÃO deve virar tela de erro)</h3>
 <p>404 no mesmo host:</p>
 <img src="imagem-inexistente.png" alt="404 esperado" width="80" height="80">
