@@ -21,7 +21,10 @@
 <a href="https://example.com" target="_blank"><button>3. link _blank &rarr; deve BLOQUEAR</button></a>
 <button onclick="location.href='file:///sdcard/'">4. file:// &rarr; deve BLOQUEAR</button>
 <button onclick="location.href='data:text/html,<h1>vazou</h1>'">5. data: &rarr; deve BLOQUEAR</button>
-<button onclick="location.href='intent://x/#Intent;scheme=http;end'">6. intent:// &rarr; deve BLOQUEAR</button>
+<button onclick="location.href='intent://x/#Intent;scheme=http;end'">6. intent:// sem reserva &rarr; deve BLOQUEAR (aviso, página continua)</button>
+<button onclick="location.href='intent://www.google.com/maps#Intent;scheme=https;package=com.google.android.apps.maps;S.browser_fallback_url=https%3A%2F%2Fwww.google.com%2Fmaps;end'">7. intent:// com reserva &rarr; deve abrir a versão web (precisa de google.com nas regras)</button>
+<a href="tel:+5511999999999"><button>8. link tel: &rarr; deve BLOQUEAR (aviso, página continua)</button></a>
+<a href="mailto:teste@exemplo.com"><button>9. link mailto: &rarr; deve BLOQUEAR (aviso, página continua)</button></a>
 <h3>Envio de arquivo</h3>
 <p>Qualquer arquivo:</p>
 <input type="file" onchange="document.getElementById('r').textContent='Arquivo: '+this.files[0].name">
@@ -46,6 +49,12 @@
 <img src="https://badssl.com/icons/icon-red.png" alt="certificado válido" width="48" height="48">
 <p>Certificado vencido (deve ficar quebrada, SEM tela de erro):</p>
 <img src="https://expired.badssl.com/icons/icon-red.png" alt="certificado vencido" width="48" height="48">
+<h3>Localização</h3>
+<button onclick="mvbGeo()">Obter localização</button>
+<p>Resultado: <span id="geo" class="r">-</span></p>
+<h3>Cookies</h3>
+<p>Cookie gravado nesta página: <span id="ck" class="r">?</span></p>
+<button onclick="mvbSetCookie()">Gravar cookie</button>
 <h3>Contador de carregamentos</h3>
 <p>Esta página foi carregada <strong id="loads" class="r">?</strong> vez(es) desde que o contador foi zerado.</p>
 <button onclick="localStorage.setItem('movbrowser_loads','0');document.getElementById('loads').textContent='0'">Zerar contador</button>
@@ -56,7 +65,7 @@
 <input type="text" inputmode="numeric" placeholder="só números" style="width:100%;padding:12px;font-size:16px">
 <p>Campo de senha:</p>
 <input type="password" placeholder="senha de teste" style="width:100%;padding:12px;font-size:16px">
-<script>document.getElementById('ua').textContent=navigator.userAgent;document.getElementById('uamob').textContent=(navigator.userAgentData?(navigator.userAgentData.mobile?'sim':'não'):'não informado')+' | Mobile na identificação: '+(/Mobile/.test(navigator.userAgent)?'sim':'não');var mvbF=0;(function f(){mvbF++;document.getElementById('raf').textContent=mvbF;requestAnimationFrame(f);})();var mvbT=0;setInterval(function(){mvbT++;document.getElementById('tick').textContent=mvbT;},1000);function mvbVp(){return window.innerWidth+' x '+window.innerHeight+' (altura útil '+document.documentElement.clientHeight+', densidade '+window.devicePixelRatio+')';}document.getElementById('vp0').textContent=mvbVp();function mvbNow(){document.getElementById('pct').textContent=document.getElementById('pctprobe').getBoundingClientRect().height;document.getElementById('vp1').textContent=mvbVp();}mvbNow();window.addEventListener('resize',mvbNow);setInterval(mvbNow,1000);document.getElementById('kt').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '});(function(){var n=0;try{n=parseInt(localStorage.getItem('movbrowser_loads')||'0',10)+1;localStorage.setItem('movbrowser_loads',String(n));}catch(e){n='indisponível';}document.getElementById('loads').textContent=n;})();</script>
+<script>function mvbGeo(){var o=document.getElementById('geo');if(!navigator.geolocation){o.textContent='este navegador não oferece localização';return;}o.textContent='aguardando...';navigator.geolocation.getCurrentPosition(function(p){o.textContent=p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5)+' (precisão '+Math.round(p.coords.accuracy)+' m)';},function(e){o.textContent='erro '+e.code+': '+(e.code===1?'permissão negada':e.code===2?'posição indisponível (GPS desligado?)':e.code===3?'tempo esgotado':e.message);},{enableHighAccuracy:true,timeout:15000,maximumAge:0});}function mvbReadCookie(){var m=document.cookie.match(/(?:^|; )mvb_cookie=([^;]*)/);document.getElementById('ck').textContent=m?decodeURIComponent(m[1]):'nenhum';}function mvbSetCookie(){var v=new Date().toLocaleString('pt-BR');document.cookie='mvb_cookie='+encodeURIComponent(v)+'; max-age=604800; path=/; secure; samesite=lax';mvbReadCookie();}mvbReadCookie();document.getElementById('ua').textContent=navigator.userAgent;document.getElementById('uamob').textContent=(navigator.userAgentData?(navigator.userAgentData.mobile?'sim':'não'):'não informado')+' | Mobile na identificação: '+(/Mobile/.test(navigator.userAgent)?'sim':'não');var mvbF=0;(function f(){mvbF++;document.getElementById('raf').textContent=mvbF;requestAnimationFrame(f);})();var mvbT=0;setInterval(function(){mvbT++;document.getElementById('tick').textContent=mvbT;},1000);function mvbVp(){return window.innerWidth+' x '+window.innerHeight+' (altura útil '+document.documentElement.clientHeight+', densidade '+window.devicePixelRatio+')';}document.getElementById('vp0').textContent=mvbVp();function mvbNow(){document.getElementById('pct').textContent=document.getElementById('pctprobe').getBoundingClientRect().height;document.getElementById('vp1').textContent=mvbVp();}mvbNow();window.addEventListener('resize',mvbNow);setInterval(mvbNow,1000);document.getElementById('kt').addEventListener('keydown',function(e){document.getElementById('k').textContent+=e.key+' '});(function(){var n=0;try{n=parseInt(localStorage.getItem('movbrowser_loads')||'0',10)+1;localStorage.setItem('movbrowser_loads',String(n));}catch(e){n='indisponível';}document.getElementById('loads').textContent=n;})();</script>
 <h3>Imagens quebradas (a página NÃO deve virar tela de erro)</h3>
 <p>404 no mesmo host:</p>
 <img src="imagem-inexistente.png" alt="404 esperado" width="80" height="80">
